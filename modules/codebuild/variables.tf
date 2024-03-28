@@ -59,3 +59,13 @@ variable "kms_key_arn" {
   description = "ARN of KMS key for encryption"
   type        = string
 }
+
+
+variable environment_variables {
+    type = list(object({
+      name = string
+      value = string
+      type = optional(string, "PLAINTEXT")
+    }))
+    default = []
+}

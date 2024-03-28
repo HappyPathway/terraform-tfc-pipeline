@@ -86,3 +86,13 @@ variable "build_project_source" {
   type        = string
   default     = "CODEPIPELINE"
 }
+
+
+variable build_environment_variables {
+    type = list(object({
+      name = string
+      value = string
+      type = optional(string, "PLAINTEXT")
+    }))
+    default = []
+}

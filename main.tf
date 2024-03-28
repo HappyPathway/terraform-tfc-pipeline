@@ -66,7 +66,9 @@ module "codebuild_terraform" {
   builder_image                       = var.builder_image
   builder_image_pull_credentials_type = var.builder_image_pull_credentials_type
   builder_type                        = var.builder_type
+  environment_variables               = var.build_environment_variables
   kms_key_arn                         = module.codepipeline_kms.arn
+  
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment

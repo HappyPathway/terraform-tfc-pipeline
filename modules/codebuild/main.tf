@@ -21,6 +21,14 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     type                        = var.builder_type
     privileged_mode             = true
     image_pull_credentials_type = var.builder_image_pull_credentials_type
+    dynamic "environment_variable" {
+      for_each = tomap(var.environment_variables)
+        content {
+          name  = environment_variable.name
+          value = environment_variable.value
+          type = lookup(environment_variable, type, "PLAINTEXT")
+        }
+      }
   }
   logs_config {
     cloudwatch_logs {
