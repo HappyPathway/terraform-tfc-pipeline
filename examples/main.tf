@@ -19,7 +19,7 @@ module main {
     #     run_order = 2
     #     version = 1
     #   }
-    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual"}
+    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual"},
     { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
     { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "ApplyOutput", output_artifacts = "DestroyOutput" }
   ]
