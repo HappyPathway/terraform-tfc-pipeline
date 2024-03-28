@@ -17,19 +17,22 @@ resource "aws_kms_key" "encryption_key" {
 }
 
 data "aws_iam_policy_document" "kms_key_policy_doc" {
-  # statement {
-  #   sid       = "Enable IAM User Permissions"
-  #   effect    = "Allow"
-  #   actions   = ["kms:*"]
-  #   #checkov:skip=CKV_AWS_111:Without this statement, KMS key cannot be managed by root
-  #   #checkov:skip=CKV_AWS_109:Without this statement, KMS key cannot be managed by root
-  #   resources = ["*"]
+  statement {
+    sid       = "Enable IAM User Permissions"
+    effect    = "Allow"
+    actions   = ["kms:*"]
+    #checkov:skip=CKV_AWS_111:Without this statement, KMS key cannot be managed by root
+    #checkov:skip=CKV_AWS_109:Without this statement, KMS key cannot be managed by root
+    resources = ["*"]
 
-  #   principals {
-  #     type        = "AWS"
-  #     identifiers = [local.approver_role]
-  #   }
-  # }
+    principals {
+      type        = "AWS"
+      identifiers = [
+        "arn:aws:iam::${local.account_id}:root",
+        data.aws_caller_identity.current.arn
+      ]
+    }
+  }
 
   statement {
     sid       = "Allow access for Key Administrators"
