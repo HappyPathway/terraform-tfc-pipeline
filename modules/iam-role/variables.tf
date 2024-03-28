@@ -40,6 +40,6 @@ variable "create_new_role" {
   default     = true
 }
 
-variable parition {
+variable partition {
   default = "aws-us-gov"
 }
