@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::${local.account_id}:root"]
+      identifiers = [local.approver_role]
     }
   }
 
