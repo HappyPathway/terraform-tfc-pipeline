@@ -23,7 +23,7 @@ resource "aws_codecommit_approval_rule_template" "source_repository_approval" {
     "Statements": [{
         "Type": "Approvers",
         "NumberOfApprovalsNeeded": 2,
-        "ApprovalPoolMembers": ["${local.approver_role}"]
+        "ApprovalPoolMembers": ["${var.repo_approvers_arn}"]
     }]
 }
 EOF
