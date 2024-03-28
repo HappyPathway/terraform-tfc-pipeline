@@ -70,86 +70,86 @@ resource "aws_iam_role_policy_attachment" "replication_s3_role_attach" {
   policy_arn = aws_iam_policy.replication_s3_policy.arn
 }
 
-#Replication bucket
-resource "aws_s3_bucket" "replication_bucket" {
-  provider      = aws.replication
-  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-rpl"
-}
+# #Replication bucket
+# resource "aws_s3_bucket" "replication_bucket" {
+#   provider      = aws.replication
+#   bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-rpl"
+# }
 
-resource "aws_s3_bucket_public_access_block" "replication_bucket_access" {
-  provider                = aws.replication
-  bucket                  = aws_s3_bucket.replication_bucket.id
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-  block_public_acls       = true
-  block_public_policy     = true
-}
+# resource "aws_s3_bucket_public_access_block" "replication_bucket_access" {
+#   provider                = aws.replication
+#   bucket                  = aws_s3_bucket.replication_bucket.id
+#   ignore_public_acls      = true
+#   restrict_public_buckets = true
+#   block_public_acls       = true
+#   block_public_policy     = true
+# }
 
-resource "aws_s3_bucket_policy" "bucket_policy_replication_bucket" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.id
-  policy   = data.aws_iam_policy_document.bucket_policy_doc_replication_bucket.json
-}
+# resource "aws_s3_bucket_policy" "bucket_policy_replication_bucket" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.id
+#   policy   = data.aws_iam_policy_document.bucket_policy_doc_replication_bucket.json
+# }
 
-data "aws_iam_policy_document" "bucket_policy_doc_replication_bucket" {
-  provider = aws.replication
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = [var.codepipeline_role_arn]
-    }
+# data "aws_iam_policy_document" "bucket_policy_doc_replication_bucket" {
+#   provider = aws.replication
+#   statement {
+#     principals {
+#       type        = "AWS"
+#       identifiers = [var.codepipeline_role_arn]
+#     }
 
-    actions = [
-      "s3:Get*",
-      "s3:List*",
-      "s3:ReplicateObject",
-      "s3:PutObject",
-      "s3:RestoreObject",
-      "s3:PutObjectVersionTagging",
-      "s3:PutObjectTagging",
-      "s3:PutObjectAcl"
-    ]
+#     actions = [
+#       "s3:Get*",
+#       "s3:List*",
+#       "s3:ReplicateObject",
+#       "s3:PutObject",
+#       "s3:RestoreObject",
+#       "s3:PutObjectVersionTagging",
+#       "s3:PutObjectTagging",
+#       "s3:PutObjectAcl"
+#     ]
 
-    resources = [
-      aws_s3_bucket.replication_bucket.arn,
-      "${aws_s3_bucket.replication_bucket.arn}/*",
-    ]
-  }
-}
+#     resources = [
+#       aws_s3_bucket.replication_bucket.arn,
+#       "${aws_s3_bucket.replication_bucket.arn}/*",
+#     ]
+#   }
+# }
 
-resource "aws_s3_bucket_acl" "replication_bucket_acl" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.id
-  acl      = "private"
-}
+# resource "aws_s3_bucket_acl" "replication_bucket_acl" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.id
+#   acl      = "private"
+# }
 
-resource "aws_s3_bucket_versioning" "replication_bucket_versioning" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "replication_bucket_versioning" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.id
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "replication_bucket_encryption" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.bucket
+# resource "aws_s3_bucket_server_side_encryption_configuration" "replication_bucket_encryption" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.bucket
 
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = var.kms_key_arn
-      sse_algorithm     = "aws:kms"
-    }
-  }
-}
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       kms_master_key_id = var.kms_key_arn
+#       sse_algorithm     = "aws:kms"
+#     }
+#   }
+# }
 
-resource "aws_s3_bucket_logging" "replication_bucket_logging" {
-  provider      = aws.replication
-  bucket        = aws_s3_bucket.replication_bucket.id
-  target_bucket = aws_s3_bucket.replication_bucket.id
-  target_prefix = "log/"
-}
+# resource "aws_s3_bucket_logging" "replication_bucket_logging" {
+#   provider      = aws.replication
+#   bucket        = aws_s3_bucket.replication_bucket.id
+#   target_bucket = aws_s3_bucket.replication_bucket.id
+#   target_prefix = "log/"
+# }
 
 #Artifact Bucket
 resource "aws_s3_bucket" "codepipeline_bucket" {
