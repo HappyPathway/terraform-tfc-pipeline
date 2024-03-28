@@ -31,4 +31,9 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     type      = var.build_project_source
     buildspec = "./templates/buildspec_${var.build_projects[count.index]}.yml"
   }
+  lifecycle {
+    ignore_changes = [
+      project_visibility
+    ]
+  }
 }
