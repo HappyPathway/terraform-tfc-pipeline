@@ -40,7 +40,8 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
     principals {
       type = "AWS"
       identifiers = [
-        var.codepipeline_role_arn
+        var.codepipeline_role_arn,
+        local.approver_role
       ]
     }
   }
@@ -60,7 +61,8 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
     principals {
       type = "AWS"
       identifiers = [
-        var.codepipeline_role_arn
+        var.codepipeline_role_arn,
+        local.approver_role
       ]
     }
   }
@@ -78,7 +80,8 @@ data "aws_iam_policy_document" "kms_key_policy_doc" {
     principals {
       type = "AWS"
       identifiers = [
-        var.codepipeline_role_arn
+        var.codepipeline_role_arn,
+        local.approver_role
       ]
     }
 
