@@ -26,7 +26,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
         content {
           name  = environment_variable.name
           value = environment_variable.value
-          type = lookup(environment_variable, type, "PLAINTEXT")
+          type =  environment_variable.type
         }
       }
   }
