@@ -61,6 +61,7 @@ variable "stage_input" {
 variable "build_projects" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(string)
+  default = ["validate", "plan", "apply"]
 }
 
 variable "builder_compute_type" {
