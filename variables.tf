@@ -50,6 +50,12 @@ variable "environment" {
 variable "stage_input" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(map(any))
+  default = [
+    { name = "validate", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "ValidateOutput" },
+    { name = "plan", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "ValidateOutput", output_artifacts = "PlanOutput" },
+    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual"},
+    { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
+  ]
 }
 
 variable "build_projects" {
@@ -95,4 +101,10 @@ variable build_environment_variables {
       type = optional(string, "PLAINTEXT")
     }))
     default = []
+}
+
+variable terraform_version {
+  type = string
+  description = "Terraform CLI Version"
+  default = "1.7.5"
 }

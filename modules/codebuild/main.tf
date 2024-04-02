@@ -37,7 +37,12 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
   }
   source {
     type      = var.build_project_source
-    buildspec = file("${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml")
+    buildspec = templatefile(
+      "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml"j,
+      {
+        terraform_version = var.terraform_version
+      }
+    )
   }
   lifecycle {
     ignore_changes = [

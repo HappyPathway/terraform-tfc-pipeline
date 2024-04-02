@@ -69,3 +69,9 @@ variable environment_variables {
     }))
     default = []
 }
+
+variable terraform_version {
+  type = string
+  description = "Terraform CLI Version"
+  default = "1.7.5"
+}
