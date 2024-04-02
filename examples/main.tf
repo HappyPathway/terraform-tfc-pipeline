@@ -8,7 +8,7 @@ module main {
   create_new_role    = true
   build_environment_variables = [
     {
-      name = "greeting",
+      name = "TF_VAR_greeting",
       value = "Dave",
       type = "PLAINTEXT"
     }
