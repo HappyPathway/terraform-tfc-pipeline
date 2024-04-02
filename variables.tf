@@ -84,7 +84,7 @@ variable "builder_image_pull_credentials_type" {
 variable "build_project_source" {
   description = "aws/codebuild/standard:4.0"
   type        = string
-  default     = "NO_SOURCE"
+  default     = "CODEPIPELINE"
 }
 
 
