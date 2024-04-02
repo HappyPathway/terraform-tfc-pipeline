@@ -38,7 +38,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
   source {
     type      = var.build_project_source
     buildspec = templatefile(
-      "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml"j,
+      "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml",
       {
         terraform_version = var.terraform_version
       }
