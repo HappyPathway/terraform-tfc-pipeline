@@ -21,7 +21,7 @@ module main {
     #   }
     { name = "approval", category = "Approval", owner = "AWS", provider = "Manual"},
     { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
-    { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "ApplyOutput", output_artifacts = "DestroyOutput" }
+    # { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "ApplyOutput", output_artifacts = "DestroyOutput" }
   ]
   build_projects = ["validate", "plan", "apply", "destroy"]
 }
