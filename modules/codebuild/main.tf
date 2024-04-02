@@ -24,9 +24,9 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     dynamic "environment_variable" {
       for_each = toset(var.environment_variables)
         content {
-          name  = environment_variable.name
-          value = environment_variable.value
-          type =  environment_variable.type
+          name  = environment_variable.value.name
+          value = environment_variable.value.value
+          type =  environment_variable.value.type
         }
       }
   }
