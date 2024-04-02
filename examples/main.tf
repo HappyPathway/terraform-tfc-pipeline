@@ -9,7 +9,8 @@ module main {
   build_environment_variables = [
     {
       name = "greeting",
-      value = "Dave"
+      value = "Dave",
+      type = "PLAINTEXT"
     }
   ]
 }
