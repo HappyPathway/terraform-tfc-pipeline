@@ -39,7 +39,3 @@ variable "create_new_role" {
   description = "Flag for deciding if a new role needs to be created"
   default     = true
 }
-
-variable partition {
-  default = "aws-us-gov"
-}

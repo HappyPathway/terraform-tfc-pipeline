@@ -104,6 +104,7 @@ module "codepipeline_iam_role" {
     Region       = local.region
   }
 }
+
 # Module for Infrastructure Validate, Plan, Apply and Destroy - CodePipeline
 module "codepipeline_terraform" {
   depends_on = [
