@@ -109,3 +109,7 @@ variable terraform_version {
   description = "Terraform CLI Version"
   default = "1.7.5"
 }
+
+variable build_permissions_iam_doc {
+  type = any
+}

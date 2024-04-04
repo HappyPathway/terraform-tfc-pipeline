@@ -50,6 +50,18 @@ module "codecommit_infrastructure_source_repo" {
 
 }
 
+
+module "codepipeline_kms" {
+  source                = "./modules/kms"
+  codepipeline_role_arn = module.codepipeline_iam_role.role_arn
+  tags = {
+    Project_Name = var.project_name
+    Environment  = var.environment
+    Account_ID   = local.account_id
+    Region       = local.region
+  }
+}
+
 # Module for Infrastructure Validation - CodeBuild
 module "codebuild_terraform" {
   depends_on = [
@@ -66,7 +78,21 @@ module "codebuild_terraform" {
   builder_image                       = var.builder_image
   builder_image_pull_credentials_type = var.builder_image_pull_credentials_type
   builder_type                        = var.builder_type
-  environment_variables               = var.build_environment_variables
+  environment_variables               = concat(
+    var.build_environment_variables,
+    [
+      {
+        name = "AWS_SECRET_ACCESS_KEY",
+        value = aws_secretsmanager_secret.credentials.arn,
+        type = "SECRETS_MANAGER"
+      },
+      {
+        name = "AWS_ACCESS_KEY_ID",
+        value = aws_iam_access_key.build_user.id,
+        type = "PLAINTEXT"
+      }
+    ]
+  )
   kms_key_arn                         = module.codepipeline_kms.arn
   
   tags = {
@@ -77,17 +103,6 @@ module "codebuild_terraform" {
   }
 }
 
-module "codepipeline_kms" {
-  source                = "./modules/kms"
-  codepipeline_role_arn = module.codepipeline_iam_role.role_arn
-  tags = {
-    Project_Name = var.project_name
-    Environment  = var.environment
-    Account_ID   = local.account_id
-    Region       = local.region
-  }
-
-}
 
 module "codepipeline_iam_role" {
   source                     = "./modules/iam-role"
