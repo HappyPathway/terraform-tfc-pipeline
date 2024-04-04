@@ -136,9 +136,15 @@ module "codepipeline_terraform" {
   s3_bucket_name        = module.s3_artifacts_bucket.bucket
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   stages                = var.enable_destroy ? [
-      { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" }
+      {
+        name = "destroy", 
+        category = "Build",
+        owner = "AWS", 
+        provider = "CodeBuild", 
+        input_artifacts = "PlanOutput", 
+        output_artifacts = "ApplyOutput" 
+      }
     ] : var.stage_input
-  )
   kms_key_arn           = module.codepipeline_kms.arn
   tags = {
     Project_Name = var.project_name
