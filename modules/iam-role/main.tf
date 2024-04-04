@@ -45,8 +45,12 @@ resource "aws_iam_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
-        "s3:*"
-      ]
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObjectAcl",
+        "s3:PutObject"
+      ],
+      "Resource": "${var.s3_bucket_arn}/*"
     },
     {
       "Effect":"Allow",
