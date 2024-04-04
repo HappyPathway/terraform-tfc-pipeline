@@ -45,6 +45,13 @@ resource "aws_iam_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "${var.credentials_secret_arn}"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
         "s3:GetObject",
         "s3:GetObjectVersion",
         "s3:PutObjectAcl",

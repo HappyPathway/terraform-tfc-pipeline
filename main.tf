@@ -103,7 +103,6 @@ module "codebuild_terraform" {
   }
 }
 
-
 module "codepipeline_iam_role" {
   source                     = "./modules/iam-role"
   project_name               = var.project_name
@@ -112,6 +111,7 @@ module "codepipeline_iam_role" {
   source_repository_name     = var.source_repo_name
   kms_key_arn                = module.codepipeline_kms.arn
   s3_bucket_arn              = module.s3_artifacts_bucket.arn
+  credentials_secret_arn     = aws_secretsmanager_secret.credentials.arn
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
