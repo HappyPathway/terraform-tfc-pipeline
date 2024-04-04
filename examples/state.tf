@@ -9,7 +9,7 @@ module "tfstate" {
    tfstate_bucket        = "tfc-pipeline"
    tfstate_bucket_prefix = "tfc-pipeline"
    tfstate_key_suffix    = "terraform.tfstate"
-   ## sso_permissionset_names =  [ "inf-terraform" ]
+   sso_permissionset_names =  [ "inf-terraform" ]
 }
 
 output tfstate {
