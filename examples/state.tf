@@ -11,10 +11,10 @@
 #    tfstate_key_suffix    = "terraform.tfstate"
 #    sso_permissionset_names =  [ "inf-terraform" ]
 # }
-module "tfstate" {
-   source = "git@github.e.it.census.gov:terraform-modules/aws-inf-setup.git//terraform-state"
-   account_alias         = "csvd-dev-ew"
-}
-output tfstate {
-    value = module.tfstate
-}
+# module "tfstate" {
+#    source = "git@github.e.it.census.gov:terraform-modules/aws-inf-setup.git//terraform-state"
+#    account_alias         = "csvd-dev-ew"
+# }
+# output tfstate {
+#     value = module.tfstate
+# }
