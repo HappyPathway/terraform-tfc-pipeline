@@ -72,7 +72,9 @@ module "codebuild_terraform" {
   project_name                        = var.project_name
   role_arn                            = module.codepipeline_iam_role.role_arn
   s3_bucket_name                      = module.s3_artifacts_bucket.bucket
-  build_projects                      = var.build_projects
+  build_projects                      = concat(
+    var.enable_destroy ? ["destroy"] : var.build_projects
+  )
   build_project_source                = var.build_project_source
   builder_compute_type                = var.builder_compute_type
   builder_image                       = var.builder_image
@@ -133,7 +135,10 @@ module "codepipeline_terraform" {
   source_repo_branch    = var.source_repo_branch
   s3_bucket_name        = module.s3_artifacts_bucket.bucket
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
-  stages                = var.stage_input
+  stages                = var.enable_destroy ? [
+      { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" }
+    ] : var.stage_input
+  )
   kms_key_arn           = module.codepipeline_kms.arn
   tags = {
     Project_Name = var.project_name

@@ -113,3 +113,9 @@ variable terraform_version {
 variable build_permissions_iam_doc {
   type = any
 }
+
+variable enable_destroy {
+  type = bool
+  description = "Enable Destroy"
+  default = false
+}
