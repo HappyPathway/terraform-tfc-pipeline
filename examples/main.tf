@@ -24,6 +24,6 @@ module main {
   source_repo_branch = "main"
   create_new_repo    = true
   create_new_role    = true
-  build_permissions_iam_doc = data.aws_iam_policy_document.s3_access.json
+  build_permissions_iam_doc = data.aws_iam_policy_document.s3_access
   build_environment_variables = local.example_build_variables
 }
