@@ -119,3 +119,15 @@ variable enable_destroy {
   description = "Enable Destroy"
   default = false
 }
+
+variable state {
+  type = object(
+    {
+      profile        = string
+      bucket         = string
+      key            = string
+      region         = string
+      dynamodb_table = string
+    }
+  )
+}
