@@ -26,7 +26,7 @@ phases:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM INIT : Initialize the Terraform Workspace"
-      - terraform init
+      - terraform init -backend-config="key=${state.key}/${environment}" -backend-config="region=${state.region}" -backend-config="bucket=${state.bucket}" -backend-config="dynamodb_table=${state.dynamodb_table}" -backend-config="encrypt=true"
       - "echo ## VALIDATION : Starting ..."
       - terraform validate
       - terraform fmt -recursive
