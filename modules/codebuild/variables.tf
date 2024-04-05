@@ -75,3 +75,16 @@ variable terraform_version {
   description = "Terraform CLI Version"
   default = "1.7.5"
 }
+
+
+variable state {
+  type = object(
+    {
+      profile        = string
+      bucket         = string
+      key            = string
+      region         = string
+      dynamodb_table = string
+    }
+  )
+}

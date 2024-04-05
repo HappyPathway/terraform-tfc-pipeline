@@ -40,7 +40,8 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     buildspec = templatefile(
       "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml",
       {
-        terraform_version = var.terraform_version
+        terraform_version = var.terraform_version,
+        state = var.state
       }
     )
   }
