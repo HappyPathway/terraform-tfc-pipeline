@@ -1,3 +1,7 @@
+data "aws_region" "current" {}
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
 resource "aws_iam_user" "build_user" {
   name = var.project_name
   path = "/tf-pipeline/${var.environment}/"
@@ -9,14 +13,51 @@ resource "aws_iam_user" "build_user" {
   }
 }
 
+data "aws_iam_policy_document" "state_access" {
+  statement {
+    effect = "Allow",
+    actions = [
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:PutObjectAcl",
+      "s3:PutObject"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}/${var.state_key}/${lookup(var.tags, "Environment")}"]
+  }
+
+  statement  {
+    effect = "Allow",
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}"]
+  }
+
+  statement {
+    effect = "Allow",
+    actions = [
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:dynamodb:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:table/${var.state_db}"]
+  }
+}
+
 resource "aws_iam_access_key" "build_user" {
   user = aws_iam_user.build_user.name
 }
 
 resource "aws_iam_user_policy" "build_user" {
-  name   = "${var.project_name}-build-user"
+  for_each = tomap({
+    "${var.project_name}-build-user" => var.build_permissions_iam_doc.json,
+    "${var.project_name}-state" => data.aws_iam_policy_document.state_access.json
+
+  })
+  name   = each.value
   user   = aws_iam_user.build_user.name
-  policy = var.build_permissions_iam_doc.json
+  policy = each.value
 }
 
 resource "aws_secretsmanager_secret" "credentials" {
