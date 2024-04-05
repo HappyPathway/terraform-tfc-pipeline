@@ -11,7 +11,7 @@ resource "aws_iam_user" "build_user" {
 
 data "aws_iam_policy_document" "state_access" {
   statement {
-    effect = "Allow",
+    effect = "Allow"
     actions = [
       "s3:GetObject",
       "s3:GetObjectVersion",
@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "state_access" {
   }
 
   statement  {
-    effect = "Allow",
+    effect = "Allow"
     actions = [
       "s3:ListBucket"
     ]
@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "state_access" {
   }
 
   statement {
-    effect = "Allow",
+    effect = "Allow"
     actions = [
         "dynamodb:DescribeTable",
         "dynamodb:GetItem",
