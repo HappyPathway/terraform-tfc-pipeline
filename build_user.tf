@@ -51,7 +51,7 @@ resource "aws_iam_user_policy" "build_user" {
     "${var.project_name}-state" = data.aws_iam_policy_document.state_access.json
 
   })
-  name   = each.value
+  name   = each.key
   user   = aws_iam_user.build_user.name
   policy = each.value
 }
