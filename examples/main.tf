@@ -12,6 +12,11 @@ locals {
       name  = "TF_VAR_greeting",
       value = "Dave",
       type  = "PLAINTEXT"
+    },
+    {
+      name = "TF_VAR_bucket_name",
+      value = "tf-hello-world",
+      type = "PLAINTEXT"
     }
   ]
 }
