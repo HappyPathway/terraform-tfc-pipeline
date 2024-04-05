@@ -114,6 +114,8 @@ module "codepipeline_iam_role" {
   kms_key_arn                = module.codepipeline_kms.arn
   s3_bucket_arn              = module.s3_artifacts_bucket.arn
   credentials_secret_arn     = aws_secretsmanager_secret.credentials.arn
+  state_bucket = lookup(var.state, "bucket")
+  state_key = lookup(var.state, "key")
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment

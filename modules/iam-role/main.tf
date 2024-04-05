@@ -62,6 +62,16 @@ resource "aws_iam_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObjectAcl",
+        "s3:PutObject"
+      ],
+      "Resource": "${var.state_bucket}/${var.state_key}/${lookup(var.tags, "Environment")}"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
         "s3:GetBucketVersioning"
       ],
       "Resource": "${var.s3_bucket_arn}"

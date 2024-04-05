@@ -43,3 +43,15 @@ variable "create_new_role" {
   description = "Flag for deciding if a new role needs to be created"
   default     = true
 }
+
+variable state_bucket {
+  type = string
+  description = "Terraform State Bucket"
+}
+
+variable state_key {
+  type = string
+  description = "Terraform State Key"
+}
+
+variable environment {}

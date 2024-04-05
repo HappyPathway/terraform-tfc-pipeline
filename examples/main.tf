@@ -16,6 +16,8 @@ locals {
   ]
 }
 
+resource random_uuid state_key {}
+
 module main {
   source = "../"
   project_name       = "tf-hello-world"
@@ -28,9 +30,8 @@ module main {
   build_environment_variables = local.example_build_variables
   enable_destroy = true
   state = {
-    profile        = "229685449397-csvd-dev-gov"
     bucket         = "inf-tfstate-229685449397"
-    key            = "csvd-dev-gov/common/apps/tfc-pipeline/terraform.tfstate"
+    key            = "csvd-dev-gov/common/apps/tfc-pipeline-${random_uuid.state_key.result}/terraform.tfstate"
     region         = "us-gov-east-1"
     dynamodb_table = "tf_remote_state"
   }
