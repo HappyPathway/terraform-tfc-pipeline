@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "state_access" {
       "s3:PutObjectAcl",
       "s3:PutObject"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(var.state, "bucket")}/${lookup(var.state, "key")}/${lookup(var.tags, "Environment")}"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(var.state, "bucket")}/${lookup(var.state, "key")}/${var.environment}"]
   }
 
   statement  {
