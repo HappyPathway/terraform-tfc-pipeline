@@ -72,6 +72,13 @@ resource "aws_iam_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
         "s3:GetBucketVersioning"
       ],
       "Resource": "${var.s3_bucket_arn}"
