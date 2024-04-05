@@ -47,8 +47,8 @@ resource "aws_iam_access_key" "build_user" {
 
 resource "aws_iam_user_policy" "build_user" {
   for_each = tomap({
-    "${var.project_name}-build-user" => var.build_permissions_iam_doc.json,
-    "${var.project_name}-state" => data.aws_iam_policy_document.state_access.json
+    "${var.project_name}-build-user" = var.build_permissions_iam_doc.json,
+    "${var.project_name}-state" = data.aws_iam_policy_document.state_access.json
 
   })
   name   = each.value
