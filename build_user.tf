@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "state_access" {
         "dynamodb:PutItem",
         "dynamodb:DeleteItem"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:dynamodb:${{lookup(var.state, "region")}:${data.aws_caller_identity.current.account_id}:table/${lookup(var.state, "dynamodb_table")}"]
+    resources = ["arn:${data.aws_partition.current.partition}:dynamodb:${lookup(var.state, "region")}:${data.aws_caller_identity.current.account_id}:table/${lookup(var.state, "dynamodb_table")}"]
   }
 }
 
