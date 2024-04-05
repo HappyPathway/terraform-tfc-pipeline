@@ -123,7 +123,6 @@ variable enable_destroy {
 variable state {
   type = object(
     {
-      profile        = string
       bucket         = string
       key            = string
       region         = string
