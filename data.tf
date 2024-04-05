@@ -4,9 +4,9 @@
 #http://aws.amazon.com/agreement or other written agreement between Customer and either
 #Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
-data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
-
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
 
 locals {
   arn_parts     = split("/", data.aws_caller_identity.current.arn)
