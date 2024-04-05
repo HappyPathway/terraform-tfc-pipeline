@@ -34,7 +34,7 @@ variable "s3_bucket_arn" {
   type        = string
 }
 
-variable credentials_secret_arn {
+variable "credentials_secret_arn" {
   description = "The ARN of the AWS Secrets Manager credentials"
 }
 
@@ -44,17 +44,17 @@ variable "create_new_role" {
   default     = true
 }
 
-variable state_bucket {
-  type = string
+variable "state_bucket" {
+  type        = string
   description = "Terraform State Bucket"
 }
 
-variable state_key {
-  type = string
+variable "state_key" {
+  type        = string
   description = "Terraform State Key"
 }
 
-variable state_db {
-  type = string
+variable "state_db" {
+  type        = string
   description = "Terraform State Locking DB"
 }

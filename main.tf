@@ -9,7 +9,7 @@ terraform {
 
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = ">= 4.20.1"
     }
   }
@@ -69,10 +69,10 @@ module "codebuild_terraform" {
   ]
   source = "./modules/codebuild"
 
-  project_name                        = var.project_name
-  role_arn                            = module.codepipeline_iam_role.role_arn
-  s3_bucket_name                      = module.s3_artifacts_bucket.bucket
-  build_projects                      = concat(
+  project_name   = var.project_name
+  role_arn       = module.codepipeline_iam_role.role_arn
+  s3_bucket_name = module.s3_artifacts_bucket.bucket
+  build_projects = concat(
     var.enable_destroy ? ["destroy"] : var.build_projects
   )
   build_project_source                = var.build_project_source
@@ -80,23 +80,23 @@ module "codebuild_terraform" {
   builder_image                       = var.builder_image
   builder_image_pull_credentials_type = var.builder_image_pull_credentials_type
   builder_type                        = var.builder_type
-  environment_variables               = concat(
+  environment_variables = concat(
     var.build_environment_variables,
     [
       {
-        name = "AWS_SECRET_ACCESS_KEY",
+        name  = "AWS_SECRET_ACCESS_KEY",
         value = aws_secretsmanager_secret.credentials.arn,
-        type = "SECRETS_MANAGER"
+        type  = "SECRETS_MANAGER"
       },
       {
-        name = "AWS_ACCESS_KEY_ID",
+        name  = "AWS_ACCESS_KEY_ID",
         value = aws_iam_access_key.build_user.id,
-        type = "PLAINTEXT"
+        type  = "PLAINTEXT"
       }
     ]
   )
-  kms_key_arn                         = module.codepipeline_kms.arn
-  state = var.state
+  kms_key_arn = module.codepipeline_kms.arn
+  state       = var.state
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
@@ -114,9 +114,9 @@ module "codepipeline_iam_role" {
   kms_key_arn                = module.codepipeline_kms.arn
   s3_bucket_arn              = module.s3_artifacts_bucket.arn
   credentials_secret_arn     = aws_secretsmanager_secret.credentials.arn
-  state_bucket = lookup(var.state, "bucket")
-  state_key = lookup(var.state, "key")
-  state_db = lookup(var.state, "dynamodb_table")
+  state_bucket               = lookup(var.state, "bucket")
+  state_key                  = lookup(var.state, "key")
+  state_db                   = lookup(var.state, "dynamodb_table")
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
@@ -138,17 +138,17 @@ module "codepipeline_terraform" {
   source_repo_branch    = var.source_repo_branch
   s3_bucket_name        = module.s3_artifacts_bucket.bucket
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
-  stages                = var.enable_destroy ? [
-      {
-        name = "destroy", 
-        category = "Build",
-        owner = "AWS", 
-        provider = "CodeBuild", 
-        input_artifacts = "PlanOutput", 
-        output_artifacts = "ApplyOutput" 
-      }
-    ] : var.stage_input
-  kms_key_arn           = module.codepipeline_kms.arn
+  stages = var.enable_destroy ? [
+    {
+      name             = "destroy",
+      category         = "Build",
+      owner            = "AWS",
+      provider         = "CodeBuild",
+      input_artifacts  = "PlanOutput",
+      output_artifacts = "ApplyOutput"
+    }
+  ] : var.stage_input
+  kms_key_arn = module.codepipeline_kms.arn
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment

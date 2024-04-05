@@ -53,7 +53,7 @@ variable "stage_input" {
   default = [
     { name = "validate", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "ValidateOutput" },
     { name = "plan", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "ValidateOutput", output_artifacts = "PlanOutput" },
-    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual"},
+    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
     { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
   ]
 }
@@ -61,7 +61,7 @@ variable "stage_input" {
 variable "build_projects" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(string)
-  default = ["validate", "plan", "apply"]
+  default     = ["validate", "plan", "apply"]
 }
 
 variable "builder_compute_type" {
@@ -95,32 +95,32 @@ variable "build_project_source" {
 }
 
 
-variable build_environment_variables {
-    type = list(object({
-      name = string
-      value = string
-      type = string
-    }))
-    default = []
+variable "build_environment_variables" {
+  type = list(object({
+    name  = string
+    value = string
+    type  = string
+  }))
+  default = []
 }
 
-variable terraform_version {
-  type = string
+variable "terraform_version" {
+  type        = string
   description = "Terraform CLI Version"
-  default = "1.7.5"
+  default     = "1.7.5"
 }
 
-variable build_permissions_iam_doc {
+variable "build_permissions_iam_doc" {
   type = any
 }
 
-variable enable_destroy {
-  type = bool
+variable "enable_destroy" {
+  type        = bool
   description = "Enable Destroy"
-  default = false
+  default     = false
 }
 
-variable state {
+variable "state" {
   type = object(
     {
       bucket         = string

@@ -61,23 +61,23 @@ variable "kms_key_arn" {
 }
 
 
-variable environment_variables {
-    type = list(object({
-      name = string
-      value = string
-      type = string
-    }))
-    default = []
+variable "environment_variables" {
+  type = list(object({
+    name  = string
+    value = string
+    type  = string
+  }))
+  default = []
 }
 
-variable terraform_version {
-  type = string
+variable "terraform_version" {
+  type        = string
   description = "Terraform CLI Version"
-  default = "1.7.5"
+  default     = "1.7.5"
 }
 
 
-variable state {
+variable "state" {
   type = object(
     {
       bucket         = string

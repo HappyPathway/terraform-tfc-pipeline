@@ -3,3 +3,10 @@
 /.terraform.lock.hcl
 /terraform.tfstate
 /terraform.tfstate.backup
+
+examples/.terraform.lock.hcl
+examples/.terraform/
+examples/error.log
+examples/terraform.tfstate
+examples/terraform.tfstate.backup
+examples/tf.log

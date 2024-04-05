@@ -23,12 +23,12 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     image_pull_credentials_type = var.builder_image_pull_credentials_type
     dynamic "environment_variable" {
       for_each = toset(var.environment_variables)
-        content {
-          name  = environment_variable.value.name
-          value = environment_variable.value.value
-          type =  environment_variable.value.type
-        }
+      content {
+        name  = environment_variable.value.name
+        value = environment_variable.value.value
+        type  = environment_variable.value.type
       }
+    }
   }
   logs_config {
     cloudwatch_logs {
@@ -36,13 +36,13 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     }
   }
   source {
-    type      = var.build_project_source
+    type = var.build_project_source
     buildspec = templatefile(
       "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml",
       {
         terraform_version = var.terraform_version,
-        state = var.state,
-        environment = lookup(var.tags, "Environment")
+        state             = var.state,
+        environment       = lookup(var.tags, "Environment")
       }
     )
   }
