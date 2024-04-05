@@ -84,7 +84,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "dynamodb:PutItem",
         "dynamodb:DeleteItem"
       ],
-      "Resource": "arn:${data.aws_partition.current.partition}:dynamodb:*:*:table/${var.state_db}"
+      "Resource": "arn:${data.aws_partition.current.partition}:dynamodb:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:table/${var.state_db}"
     },
     {
       "Effect":"Allow",
