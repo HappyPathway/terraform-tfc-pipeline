@@ -53,3 +53,8 @@ variable state_key {
   type = string
   description = "Terraform State Key"
 }
+
+variable state_db {
+  type = string
+  description = "Terraform State Locking DB"
+}

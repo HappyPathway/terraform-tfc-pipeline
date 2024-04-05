@@ -77,6 +77,16 @@ resource "aws_iam_policy" "codepipeline_policy" {
       "Resource": "arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}"
     },
     {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:DeleteItem"
+      ],
+      "Resource": "arn:aws:dynamodb:*:*:table/${var.state_db}"
+    },
+    {
       "Effect":"Allow",
       "Action": [
         "s3:GetBucketVersioning"
