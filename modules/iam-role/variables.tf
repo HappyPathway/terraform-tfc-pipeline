@@ -53,5 +53,3 @@ variable state_key {
   type = string
   description = "Terraform State Key"
 }
-
-variable environment {}
