@@ -96,7 +96,7 @@ module "codebuild_terraform" {
     ]
   )
   kms_key_arn                         = module.codepipeline_kms.arn
-  
+  state = var.state
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
