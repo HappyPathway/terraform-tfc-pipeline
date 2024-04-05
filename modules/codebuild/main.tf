@@ -41,7 +41,8 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
       "${path.module}/templates/buildspec_${var.build_projects[count.index]}.yml",
       {
         terraform_version = var.terraform_version,
-        state = var.state
+        state = var.state,
+        environment = var.tags.Environment
       }
     )
   }
