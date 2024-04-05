@@ -67,7 +67,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "s3:PutObjectAcl",
         "s3:PutObject"
       ],
-      "Resource": ""arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}/${var.state_key}/${lookup(var.tags, "Environment")}"
+      "Resource": ""arn:${data.aws_partition.current.partition}:s3:::${var.state_bucket}/*"
     },
     {
       "Effect":"Allow",
