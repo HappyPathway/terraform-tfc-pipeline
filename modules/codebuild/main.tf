@@ -42,7 +42,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
       {
         terraform_version = var.terraform_version,
         state = var.state,
-        environment = var.tags.Environment
+        environment = lookup(var.tags, "Environment")
       }
     )
   }
