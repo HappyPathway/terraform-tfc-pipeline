@@ -77,7 +77,7 @@ variable "build_projects" {
 variable "destroy_projects" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(string)
-  default     = ["init", "validate", "plan", "apply"]
+  default     = ["init", "destroy"]
 }
 
 variable "builder_compute_type" {
