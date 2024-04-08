@@ -23,7 +23,8 @@ phases:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM PLAN : Generate the Terraform Plan"
-      - "terraform plan -destroy -out tfapply"
+      - PIPELINE_EXECUTION_ID=$(aws codepipeline get-pipeline-state --region $${AWS_REGION} --name ${pipeline_name} --query 'stageStates[?actionStates[?latestExecution.externalExecutionId==`'$${CODEBUILD_BUILD_ID}'`]].latestExecution.pipelineExecutionId' --output text)
+      - "terraform plan -destroy -out tfapply | grep -q 'No changes.' && aws codepipeline stop-pipeline-execution --pipeline-name ${pipeline_name} –-pipeline-execution-id $PIPELINE_EXECUTION_ID --abandon --reason 'No changes. Your infrastructure matches the configuration.'
 artifacts:
   files:
     - '**/*'
