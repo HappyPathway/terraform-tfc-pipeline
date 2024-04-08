@@ -51,17 +51,33 @@ variable "stage_input" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(map(any))
   default = [
-    { name = "validate", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "ValidateOutput" },
+    { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
+    { name = "validate", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "ValidateOutput" },
     { name = "plan", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "ValidateOutput", output_artifacts = "PlanOutput" },
     { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
     { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
   ]
 }
 
+variable "destroy_stage_input"{
+  description = "Stages for a terraform destroy"
+  default = [
+    { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
+    { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts  = "InitOutput", output_artifacts = "DestroyOutput"}
+  ]
+}
+
 variable "build_projects" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(string)
-  default     = ["validate", "plan", "apply"]
+  default     = ["init", "validate", "plan", "apply"]
+}
+
+
+variable "destroy_projects" {
+  description = "Tags to be attached to the CodePipeline"
+  type        = list(string)
+  default     = ["init", "validate", "plan", "apply"]
 }
 
 variable "builder_compute_type" {
