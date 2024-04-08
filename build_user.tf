@@ -41,6 +41,16 @@ data "aws_iam_policy_document" "state_access" {
   }
 }
 
+data "aws_iam_policy_document" "pipeline_access" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "codepipeline:GetPipelineState"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:codepipeline:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:${var.project_name}"]
+  }
+}
+
 resource "aws_iam_access_key" "build_user" {
   user = aws_iam_user.build_user.name
 }
@@ -48,8 +58,8 @@ resource "aws_iam_access_key" "build_user" {
 resource "aws_iam_user_policy" "build_user" {
   for_each = tomap({
     "${var.project_name}-build-user" = var.build_permissions_iam_doc.json,
-    "${var.project_name}-state" = data.aws_iam_policy_document.state_access.json
-
+    "${var.project_name}-state" = data.aws_iam_policy_document.state_access.json,
+     "${var.project_name}-pipeline-access" = data.aws_iam_policy_document.pipeline_access.json
   })
   name   = each.key
   user   = aws_iam_user.build_user.name
