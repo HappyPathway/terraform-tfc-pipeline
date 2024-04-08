@@ -44,7 +44,7 @@ resource "aws_codepipeline" "terraform_pipeline" {
     for_each = var.stages
 
     content {
-      name = "Stage-${stage.value["name"]}"
+      name = stage.value["name"]
       action {
         category         = stage.value["category"]
         name             = "Action-${stage.value["name"]}"

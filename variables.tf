@@ -63,7 +63,7 @@ variable "destroy_stage_input"{
   description = "Stages for a terraform destroy"
   default = [
     { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
-    { name = "plan_destroy", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "PlanDestroyOutput" },
+    { name = "plan-destroy", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "PlanDestroyOutput" },
     { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
     { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts  = "PlanDestroyOutput", output_artifacts = "DestroyOutput"}
   ]
