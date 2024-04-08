@@ -72,9 +72,7 @@ module "codebuild_terraform" {
   project_name   = var.project_name
   role_arn       = module.codepipeline_iam_role.role_arn
   s3_bucket_name = module.s3_artifacts_bucket.bucket
-  build_projects = concat(
-    var.enable_destroy ? var.destroy_projects : var.build_projects
-  )
+  build_projects = var.enable_destroy ? var.destroy_projects : var.build_projects
   build_project_source                = var.build_project_source
   builder_compute_type                = var.builder_compute_type
   builder_image                       = var.builder_image
