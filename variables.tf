@@ -54,7 +54,7 @@ variable "stage_input" {
     { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
     { name = "validate", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "ValidateOutput" },
     { name = "plan", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "ValidateOutput", output_artifacts = "PlanOutput" },
-    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
+    { name = "approve", category = "Approval", owner = "AWS", provider = "Manual" },
     { name = "apply", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts = "PlanOutput", output_artifacts = "ApplyOutput" },
   ]
 }
@@ -64,7 +64,7 @@ variable "destroy_stage_input"{
   default = [
     { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
     { name = "plan-destroy", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "PlanDestroyOutput" },
-    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
+    { name = "approve", category = "Approval", owner = "AWS", provider = "Manual" },
     { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts  = "PlanDestroyOutput", output_artifacts = "DestroyOutput"}
   ]
 }
