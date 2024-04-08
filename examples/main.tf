@@ -25,7 +25,7 @@ resource "random_uuid" "state_key" {}
 
 module "main" {
   source                      = "../"
-  project_name                = "tf-hello-world"
+  project_name                = "tf-hello-dave"
   environment                 = "dev"
   source_repo_name            = "terraform-sample-repo"
   source_repo_branch          = "main"
