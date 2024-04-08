@@ -47,7 +47,7 @@ resource "aws_codepipeline" "terraform_pipeline" {
       name = title(stage.value["name"])
       action {
         category         = stage.value["category"]
-        name             = "Action-${stage.value["name"]}"
+        name             = stage.value["name"]
         owner            = stage.value["owner"]
         provider         = stage.value["provider"]
         input_artifacts  = lookup(stage.value, "input_artifacts", "") != "" ? [stage.value["input_artifacts"]] : null
