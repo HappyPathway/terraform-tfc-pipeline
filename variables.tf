@@ -63,7 +63,9 @@ variable "destroy_stage_input"{
   description = "Stages for a terraform destroy"
   default = [
     { name = "init", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "SourceOutput", output_artifacts = "InitOutput" },
-    { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts  = "InitOutput", output_artifacts = "DestroyOutput"}
+    { name = "plan_destroy", category = "Test", owner = "AWS", provider = "CodeBuild", input_artifacts = "InitOutput", output_artifacts = "PlanDestroyOutput" },
+    { name = "approval", category = "Approval", owner = "AWS", provider = "Manual" },
+    { name = "destroy", category = "Build", owner = "AWS", provider = "CodeBuild", input_artifacts  = "PlanDestroyOutput", output_artifacts = "DestroyOutput"}
   ]
 }
 
@@ -77,7 +79,7 @@ variable "build_projects" {
 variable "destroy_projects" {
   description = "Tags to be attached to the CodePipeline"
   type        = list(string)
-  default     = ["init", "destroy"]
+  default     = ["init", "plan_destroy","destroy"]
 }
 
 variable "builder_compute_type" {
