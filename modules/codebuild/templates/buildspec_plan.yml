@@ -23,8 +23,7 @@ phases:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM PLAN : Generate the Terraform Plan"
-      - export PIPELINE_ID=$(aws codepipeline get-pipeline-state --region $${AWS_REGION} --name ${pipeline_name} --query 'stageStates[?actionStates[?latestExecution.externalExecutionId==`'$${CODEBUILD_BUILD_ID}'`]].latestExecution.pipelineExecutionId' --output text)
-      - "terraform plan -out tfapply | grep -q 'No changes.' && aws codepipeline stop-pipeline-execution --pipeline-name ${pipeline_name} --pipeline-execution-id $PIPELINE_ID --abandon"
+      - "terraform plan -out tfapply | grep -q 'No changes.' && exit 1
 artifacts:
   files:
     - '**/*'
