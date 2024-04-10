@@ -23,7 +23,7 @@ phases:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM PLAN : Generate the Terraform Plan"
-      - "terraform plan -destroy -out tfapply | grep -q 'No changes' && echo "Terraform has detected no changes and therefore will not apply." && exit 1"
+      - "terraform plan -destroy -out tfapply | grep -q 'No changes' && echo 'Terraform has detected no changes and therefore will not apply' && exit 1"
 artifacts:
   files:
     - '**/*'
