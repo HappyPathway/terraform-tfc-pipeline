@@ -12,21 +12,11 @@ env:
     SCRIPT_DIR: "./templates/scripts"
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.9
-      golang: 1.14
-    commands:
-      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip"
-      - "unzip -o terraform.zip"
-      - "mv terraform /bin"
-      - "rm terraform.zip"
-
   build:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM INIT : Initialize the Terraform Workspace"
-      - terraform init -backend-config="key=${state.key}/${environment}" -backend-config="region=${state.region}" -backend-config="bucket=${state.bucket}" -backend-config="dynamodb_table=${state.dynamodb_table}" -backend-config="encrypt=true"
+      - ./terraform init -backend-config="key=${state.key}/${environment}" -backend-config="region=${state.region}" -backend-config="bucket=${state.bucket}" -backend-config="dynamodb_table=${state.dynamodb_table}" -backend-config="encrypt=true"
       
 artifacts:
   files:

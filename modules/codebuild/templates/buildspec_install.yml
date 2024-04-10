@@ -9,16 +9,15 @@ version: 0.2
 env:
   variables:
     CODE_SRC_DIR: "."
-    SCRIPT_DIR: "./templates/scripts"
 
 phases:
-  build:
+  install:
+    runtime-versions:
+      python: 3.9
     commands:
-      - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
-      - "echo ## VALIDATION : Starting ..."
-      - ./terraform validate
-      - ./terraform fmt -recursive
-      
+      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip"
+      - "unzip -o terraform.zip"
+      - "rm terraform.zip"
 artifacts:
   files:
     - '**/*'

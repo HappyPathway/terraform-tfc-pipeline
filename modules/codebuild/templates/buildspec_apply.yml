@@ -11,19 +11,11 @@ env:
     CODE_SRC_DIR: "."
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.9
-    commands:
-      - "curl -s -qL -o terraform.zip https://releases.hashicorp.com/terraform/${terraform_version}/terraform_${terraform_version}_linux_amd64.zip"
-      - "unzip -o terraform.zip"
-      - "mv terraform /bin"
-      - "rm terraform.zip"
   build:
     commands:
       - "cd $${CODEBUILD_SRC_DIR}/$${CODE_SRC_DIR}"
       - "echo ## TERRAFORM APPLY : Starting with the Terraform Apply"
-      - "terraform apply -input=false tfapply"
+      - "./terraform apply -input=false tfapply"
 
 artifacts:
   files:
