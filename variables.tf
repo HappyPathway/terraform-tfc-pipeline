@@ -142,7 +142,7 @@ variable "state" {
   type = object(
     {
       bucket         = string
-      key            = string
+      key_prefix     = string
       region         = string
       dynamodb_table = string
     }
