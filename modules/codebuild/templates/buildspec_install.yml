@@ -20,4 +20,4 @@ phases:
       - "rm terraform.zip"
 artifacts:
   files:
-    - '**/*'
+    - 'terraform'
