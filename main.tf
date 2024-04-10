@@ -16,6 +16,14 @@ terraform {
 
 }
 
+locals {
+  state_key = join("/", [lookup(var.state, "key_prefix"), "${var.project_name}-${var.environment}"])
+  state = merge(
+    var.state,
+    { key = local.state_key }
+  )
+} 
+
 #Module for creating a new S3 bucket for storing pipeline artifacts
 module "s3_artifacts_bucket" {
   source                = "./modules/s3"
@@ -94,7 +102,7 @@ module "codebuild_terraform" {
     ]
   )
   kms_key_arn = module.codepipeline_kms.arn
-  state       = var.state
+  state       = local.state
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
@@ -112,9 +120,9 @@ module "codepipeline_iam_role" {
   kms_key_arn                = module.codepipeline_kms.arn
   s3_bucket_arn              = module.s3_artifacts_bucket.arn
   credentials_secret_arn     = aws_secretsmanager_secret.credentials.arn
-  state_bucket               = lookup(var.state, "bucket")
-  state_key                  = lookup(var.state, "key")
-  state_db                   = lookup(var.state, "dynamodb_table")
+  state_bucket               = lookup(local.state, "bucket")
+  state_key                  = lookup(local.state, "key")
+  state_db                   = lookup(local.state, "dynamodb_table")
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment

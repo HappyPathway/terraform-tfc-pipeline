@@ -66,8 +66,10 @@ resource "aws_iam_user_policy" "build_user" {
   policy = each.value
 }
 
+resource "random_uuid" "credentials_suffix" {}
+
 resource "aws_secretsmanager_secret" "credentials" {
-  name = "${var.project_name}-aws-credentials"
+  name = "${var.project_name}-${var.environment}-aws-credentials-${random_uuid.credentials_suffix.result}"
 }
 
 resource "aws_secretsmanager_secret_version" "credentials" {

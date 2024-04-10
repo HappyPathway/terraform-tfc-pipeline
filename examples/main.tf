@@ -21,8 +21,6 @@ locals {
   ]
 }
 
-resource "random_uuid" "state_key" {}
-
 module "main" {
   source                      = "../"
   project_name                = "tf-hello-dave"
@@ -36,7 +34,7 @@ module "main" {
   enable_destroy = true
   state = {
     bucket         = "inf-tfstate-229685449397"
-    key            = "csvd-dev-gov/common/apps/tfc-pipeline-${random_uuid.state_key.result}/terraform.tfstate"
+    key_prefix     = "csvd-dev-gov/common/apps"
     region         = "us-gov-east-1"
     dynamodb_table = "tf_remote_state"
   }
