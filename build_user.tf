@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "state_access" {
       "s3:PutObjectAcl",
       "s3:PutObject"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(var.state, "bucket")}/${lookup(var.state, "key")}/${var.environment}"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(local.state, "bucket")}/${lookup(local.state, "key")}/${var.environment}"]
   }
 
   statement  {
@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "state_access" {
     actions = [
       "s3:ListBucket"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(var.state, "bucket")}"]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${lookup(local.state, "bucket")}"]
   }
 
   statement {
@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "state_access" {
         "dynamodb:PutItem",
         "dynamodb:DeleteItem"
     ]
-    resources = ["arn:${data.aws_partition.current.partition}:dynamodb:${lookup(var.state, "region")}:${data.aws_caller_identity.current.account_id}:table/${lookup(var.state, "dynamodb_table")}"]
+    resources = ["arn:${data.aws_partition.current.partition}:dynamodb:${lookup(local.state, "region")}:${data.aws_caller_identity.current.account_id}:table/${lookup(local.state, "dynamodb_table")}"]
   }
 }
 
