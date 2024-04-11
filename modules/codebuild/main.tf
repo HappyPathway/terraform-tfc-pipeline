@@ -10,7 +10,7 @@ locals {
     for secret, value in var.workspace_secrets : 
       { 
         name = secret, 
-        value = value, 
+        value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}", 
         type = "SECRETS_MANAGER"
       }
   ]
@@ -18,14 +18,14 @@ locals {
     for parameter, value in var.workspace_parameters : 
       {
         name = parameter, 
-        value = value,
+        value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}"
         type = "PARAMETER_STORE"
       }
     ]
   workspace_vars = [
     for _var, value in var.workspace_vars : {
       name = _var,
-      value = value,
+      value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}",
       type = "PLAINTEXT"
     }
   ]

@@ -148,3 +148,19 @@ variable "state" {
     }
   )
 }
+
+variable workspace_parameters {
+  type = map(string)
+  default = {}
+}
+
+variable workspace_secrets {
+  sensitive = true
+  type = map(string)
+  default = {}
+}
+
+variable workspace_vars {
+  type = map(string)
+  default = {}
+}

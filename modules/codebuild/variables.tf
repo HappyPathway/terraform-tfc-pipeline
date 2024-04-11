@@ -76,7 +76,6 @@ variable workspace_parameters {
 }
 
 variable workspace_secrets {
-  sensitive = true
   type = map(string)
   default = {}
 }
@@ -92,7 +91,7 @@ variable "terraform_version" {
   default     = "1.7.5"
 }
 
-
+                                              
 variable "state" {
   type = object(
     {
