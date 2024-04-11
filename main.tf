@@ -87,19 +87,23 @@ module "codebuild_terraform" {
   builder_image_pull_credentials_type = var.builder_image_pull_credentials_type
   builder_type                        = var.builder_type
   workspace_parameters                = var.workspace_parameters
-  workspace_secrets = merge(
-    var.workspace_secrets,
-    {
-      AWS_SECRET_ACCESS_KEY = aws_secretsmanager_secret.credentials.arn
-    }
+  workspace_secrets                   = var.workspace_secrets
+  workspace_vars                      = var.workspace_vars
+  environment_variables = concat(
+    var.build_environment_variables,
+    [
+      {
+        name = "AWS_SECRET_ACCESS_KEY",
+        value = aws_secretsmanager_secret.credentials.arn
+        type = "SECRETS_MANAGER"
+      },
+      {
+        name = AWS_ACCESS_KEY_ID,
+        value = aws_iam_access_key.build_user.id
+        type = "PLAINTEXT"
+      }
+    ]
   )
-  workspace_vars = merge(
-    var.workspace_vars,
-    {
-      AWS_ACCESS_KEY_ID = aws_iam_access_key.build_user.id
-    }
-  )
-  environment_variables = var.build_environment_variables
   kms_key_arn = module.codepipeline_kms.arn
   state       = local.state
   tags = {
