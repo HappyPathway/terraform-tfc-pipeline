@@ -6,36 +6,35 @@
 
 locals {
   # type - (Optional) Type of environment variable. Valid values: PARAMETER_STORE, PLAINTEXT, SECRETS_MANAGER.
-  workspace_secrets =[
+  workspace_secrets = [
     for secret, value in var.workspace_secrets : 
-      tomap({ 
+      { 
         name = secret, 
         value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}", 
         type = "SECRETS_MANAGER"
-      })
+      }
   ]
   workspace_parameters = [
     for parameter, value in var.workspace_parameters : 
-      tomap({
+      {
         name = parameter, 
         value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}"
         type = "PARAMETER_STORE"
-      })
-    ]
+      }
+  ]
   workspace_vars = [
     for _var, value in var.workspace_vars : 
-      tomap({
+      {
         name = _var,
         value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}",
         type = "PLAINTEXT"
-      })
+      }
   ]
   environment_variables = concat(
     var.environment_variables,
-    [],
-    # local.workspace_secrets,
-    # local.workspace_parameters,
-    # local.workspace_vars
+    local.workspace_secrets,
+    local.workspace_parameters,
+    local.workspace_vars
   )
 }
 
