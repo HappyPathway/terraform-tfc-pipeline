@@ -30,7 +30,7 @@ locals {
     }
   ]
   environment_variables = concat(
-    var.var.environment_variables,
+    var.environment_variables,
     local.workspace_secrets,
     local.workspace_parameters,
     local.workspace_vars
