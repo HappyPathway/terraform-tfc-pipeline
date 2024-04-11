@@ -70,6 +70,22 @@ variable "environment_variables" {
   default = []
 }
 
+variable workspace_parameters {
+  type = map(string)
+  default = {}
+}
+
+variable workspace_secrets {
+  sensitive = true
+  type = map(string)
+  default = {}
+}
+
+variable workspace_vars {
+  type = map(string)
+  default = {}
+}
+
 variable "terraform_version" {
   type        = string
   description = "Terraform CLI Version"

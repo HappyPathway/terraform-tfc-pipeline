@@ -4,6 +4,39 @@
 #http://aws.amazon.com/agreement or other written agreement between Customer and either
 #Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
+locals {
+  # type - (Optional) Type of environment variable. Valid values: PARAMETER_STORE, PLAINTEXT, SECRETS_MANAGER.
+  workspace_secrets =[
+    for secret, value in var.workspace_secrets : 
+      { 
+        name = secret, 
+        value = value, 
+        type = "SECRETS_MANAGER"
+      }
+  ]
+  workspace_parameters = [
+    for parameter, value in var.workspace_parameters : 
+      {
+        name = parameter, 
+        value = value,
+        type = "PARAMETER_STORE"
+      }
+    ]
+  workspace_vars = [
+    for _var, value in var.workspace_vars : {
+      name = _var,
+      value = value,
+      type = "PLAINTEXT"
+    }
+  ]
+  environment_variables = concat(
+    var.var.environment_variables,
+    local.workspace_secrets,
+    local.workspace_parameters,
+    local.workspace_vars
+  )
+}
+
 resource "aws_codebuild_project" "terraform_codebuild_project" {
 
   for_each = toset(var.build_projects)
@@ -22,7 +55,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     privileged_mode             = true
     image_pull_credentials_type = var.builder_image_pull_credentials_type
     dynamic "environment_variable" {
-      for_each = toset(var.environment_variables)
+      for_each = toset(local.environment_variables)
       content {
         name  = environment_variable.value.name
         value = environment_variable.value.value
