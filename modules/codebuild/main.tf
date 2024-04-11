@@ -7,35 +7,35 @@
 locals {
   # type - (Optional) Type of environment variable. Valid values: PARAMETER_STORE, PLAINTEXT, SECRETS_MANAGER.
   workspace_secrets = [
-    for secret, value in var.workspace_secrets : 
+    for secret, value in nonsensitive(var.workspace_secrets) : 
       { 
-        name = secret, 
-        value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}", 
+        value = value, 
+        name = startswith(secret, "TF_VAR_") ? secret : "TF_VAR_${secret}", 
         type = "SECRETS_MANAGER"
       }
   ]
   workspace_parameters = [
     for parameter, value in var.workspace_parameters : 
       {
-        name = parameter, 
-        value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}"
+        value = value, 
+        name = startswith(parameter, "TF_VAR_") ? parameter : "TF_VAR_${parameter}"
         type = "PARAMETER_STORE"
       }
   ]
   workspace_vars = [
     for _var, value in var.workspace_vars : 
       {
-        name = _var,
-        value = startswith(value, "TF_VAR_") ? value : "TF_VAR_${value}",
+        value = value,
+        name = startswith(_var, "TF_VAR_") ? _var : "TF_VAR_${_var}",
         type = "PLAINTEXT"
       }
   ]
-  environment_variables = concat(
+  environment_variables = tolist(concat(
     var.environment_variables,
     local.workspace_secrets,
     local.workspace_parameters,
     local.workspace_vars
-  )
+  ))
 }
 
 resource "aws_codebuild_project" "terraform_codebuild_project" {
@@ -56,7 +56,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
     privileged_mode             = true
     image_pull_credentials_type = var.builder_image_pull_credentials_type
     dynamic "environment_variable" {
-      for_each = toset(local.environment_variables)
+      for_each = tolist([ for _var in local.environment_variables : tomap(_var) ])
       content {
         name  = environment_variable.value.name
         value = environment_variable.value.value
