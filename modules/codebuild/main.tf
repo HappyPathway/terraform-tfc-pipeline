@@ -32,9 +32,10 @@ locals {
   ]
   environment_variables = concat(
     var.environment_variables,
-    local.workspace_secrets,
-    local.workspace_parameters,
-    local.workspace_vars
+    [],
+    # local.workspace_secrets,
+    # local.workspace_parameters,
+    # local.workspace_vars
   )
 }
 
