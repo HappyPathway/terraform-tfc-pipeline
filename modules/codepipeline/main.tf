@@ -19,7 +19,27 @@ resource "aws_codepipeline" "terraform_pipeline" {
     }
   }
 
-  stage {
+  dynamic "stage" {
+    for_each = var.code_source == "codestar" ? ["*"] : []
+    name = "Source"
+    action {
+      name             = "Source"
+      category         = "Source"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
+      version          = "1"
+      output_artifacts = ["SourceOutput"]
+
+      configuration = {
+        ConnectionArn    = var.aws_codestarconnections_connection_arn
+        FullRepositoryId = "${var.source_repo_org}/${var.source_repo_name}"
+        BranchName       = var.source_repo_branch
+      }
+    }
+  }
+
+  dynamic "stage" {
+    for_each = var.code_source == "codecommit" ? ["*"] : []
     name = "Source"
 
     action {

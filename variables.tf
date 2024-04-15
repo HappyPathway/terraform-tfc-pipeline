@@ -164,3 +164,26 @@ variable workspace_vars {
   type = map(string)
   default = {}
 }
+
+variable "aws_codestarconnections_connection_arn" {
+  default = null
+  type = string
+  description = "If using a codestar connection, specify the arn of that codestart connection here"
+}
+
+variable "source_repo_org" {
+  default = null
+  type = string
+  description = "If using a codestar connection, specify the github organization of the repo"
+}
+
+
+variable code_source {
+  default = "codecommit"
+  type = string
+  description = "specify if pulling from codecommit or codestar"
+  validation {
+    condition     = contains(["codecommit", "codestar"], var.code_source)
+    error_message = "Currently this pipeline module only supports code commit and code star connections. Please specify either codecommit or codestar"
+  }
+}
