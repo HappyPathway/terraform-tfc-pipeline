@@ -21,41 +21,45 @@ resource "aws_codepipeline" "terraform_pipeline" {
 
   dynamic "stage" {
     for_each = var.code_source == "codestar" ? ["*"] : []
-    name = "Source"
-    action {
-      name             = "Source"
-      category         = "Source"
-      owner            = "AWS"
-      provider         = "CodeStarSourceConnection"
-      version          = "1"
-      output_artifacts = ["SourceOutput"]
+    content {
+      name = "Source"
+      action {
+        name             = "Source"
+        category         = "Source"
+        owner            = "AWS"
+        provider         = "CodeStarSourceConnection"
+        version          = "1"
+        output_artifacts = ["SourceOutput"]
 
-      configuration = {
-        ConnectionArn    = var.aws_codestarconnections_connection_arn
-        FullRepositoryId = "${var.source_repo_org}/${var.source_repo_name}"
-        BranchName       = var.source_repo_branch
+        configuration = {
+          ConnectionArn    = var.aws_codestarconnections_connection_arn
+          FullRepositoryId = "${var.source_repo_org}/${var.source_repo_name}"
+          BranchName       = var.source_repo_branch
+        }
       }
     }
   }
 
   dynamic "stage" {
     for_each = var.code_source == "codecommit" ? ["*"] : []
-    name = "Source"
+    content {
+      name = "Source"
 
-    action {
-      name             = "Download-Source"
-      category         = "Source"
-      owner            = "AWS"
-      version          = "1"
-      provider         = "CodeCommit"
-      namespace        = "SourceVariables"
-      output_artifacts = ["SourceOutput"]
-      run_order        = 1
+      action {
+        name             = "Download-Source"
+        category         = "Source"
+        owner            = "AWS"
+        version          = "1"
+        provider         = "CodeCommit"
+        namespace        = "SourceVariables"
+        output_artifacts = ["SourceOutput"]
+        run_order        = 1
 
-      configuration = {
-        RepositoryName       = var.source_repo_name
-        BranchName           = var.source_repo_branch
-        PollForSourceChanges = "true"
+        configuration = {
+          RepositoryName       = var.source_repo_name
+          BranchName           = var.source_repo_branch
+          PollForSourceChanges = "true"
+        }
       }
     }
   }
