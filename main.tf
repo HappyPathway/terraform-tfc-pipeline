@@ -98,7 +98,7 @@ module "codebuild_terraform" {
         type = "SECRETS_MANAGER"
       },
       {
-        name = AWS_ACCESS_KEY_ID,
+        name = "AWS_ACCESS_KEY_ID",
         value = aws_iam_access_key.build_user.id
         type = "PLAINTEXT"
       }

@@ -31,7 +31,7 @@ module "main" {
   create_new_role             = true
   build_permissions_iam_doc   = data.aws_iam_policy_document.s3_access
   # build_environment_variables = local.example_build_variables
-  enable_destroy = true
+  # enable_destroy = true
   workspace_vars = {
     greeting = "Dave",
     bucket_name = "tf-hello-world"
